@@ -12,13 +12,11 @@ class BattleMap:
 
         number_index = number - 1
 
+        result = 0
+
         try:
-            return self.map[letter_index][number_index]
+            result = self.map[letter_index][number_index]
         except IndexError:
             print ("The coodrinates are incorrect.")
 
-# battle_map = battle_map()
-#
-# value = battle_map.get_cell_value("b", 8)
-#
-# print (value)
+        return result
