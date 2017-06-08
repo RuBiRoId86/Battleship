@@ -20,3 +20,4 @@ class BattleMap:
             print ("The coodrinates are incorrect.")
 
         return result
+
