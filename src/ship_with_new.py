@@ -2,6 +2,13 @@ from cell import Cell
 
 class Ship:
 
+    ship_types = {
+                    1: "submarine",
+                    2: "destroyer",
+                    3: "cruiser",
+                    4: "battleship"
+                 }
+
     def __new__(cls,cell_tuple):
         if 1 <= len(cell_tuple) <= 4:
             if cls.__are_cells_valid(cell_tuple):
