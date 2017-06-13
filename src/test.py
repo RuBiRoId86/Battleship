@@ -33,3 +33,4 @@ print(ship1 is None)
 #     print("Hello c5")
 # print(c5.letter_index)
 # print(c5.number_index)
+
