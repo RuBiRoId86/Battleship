@@ -1,10 +1,9 @@
 import re
-#from battle_map_with_cell import BattleMap
+from battle_map_with_cell import BattleMap
 from cell_with_new import Cell
 from ship_with_new import Ship
-#obm = BattleMap()
 
-#obm.set_cell_value("e", 3, 1)
+own_bm = BattleMap()
 
 def ship_construction(ship_length):
     print("Position the", ship_length, "cell", Ship.ship_types[ship_length])
@@ -28,6 +27,7 @@ def ship_construction(ship_length):
             cell_list.append(cell)
         cell_tuple = tuple(cell_list)
         ship = Ship(cell_tuple)
+        own_bm.dispose_ship(ship)
 
     print("The", ship_length, "cell", Ship.ship_types[ship_length], "is positioned.")
 
@@ -47,6 +47,8 @@ destroyer1 = ship_construction(2)
 # submarine4 = ship_construction(1)
 
 print("End of input")
+
+
 
 print("length : ", len(getattr(destroyer1, "cell_tuple")))
 

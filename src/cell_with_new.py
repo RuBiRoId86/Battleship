@@ -8,3 +8,10 @@ class Cell:
             return self
         else:
             print("Invalid cell. Coordinates are out of borders.")
+
+    @staticmethod
+    def cell_coordinates_are_valid(letter_index, number_index):
+        if 0 <= letter_index <= 9 and 0 <= number_index <= 0:
+            return True
+        else:
+            return False

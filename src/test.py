@@ -33,5 +33,6 @@ from ship_with_new import Ship
 #     print("Hello c5")
 # print(c5.letter_index)
 # print(c5.number_index)
-ship_length = 4
-print("Position the", ship_length, "cell", Ship.ship_type(ship_length))
+#ship_length = 4
+#print("Position the", ship_length, "cell", Ship.ship_type(ship_length))
+print(chr(97))
