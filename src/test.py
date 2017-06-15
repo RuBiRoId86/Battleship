@@ -1,38 +1,20 @@
-from cell import Cell
-from ship_with_new import Ship
+from battle_map_with_cell import BattleMap
+from cell_with_new import Cell
+bm = BattleMap()
 
-#c0 = Cell.create_valid_cells('a', 1)
-#c1 = Cell('b', 1)
-#c2 = Cell('c', 1)
-#c3 = Cell('d', 1)
-#c4 = Cell('e', 1)
-#c5 = Cell.create_valid_cells('m', 1)
+cell1 = Cell("a", 7)
 
-# c0 = Cell('b', 6)
-# c1 = Cell('b', 5)
-# c2 = Cell('b', 4)
+cell2 = Cell("b", 8)
+print(bm.get_cell_value(cell1))
 
+bm.set_cell_value(cell1, 1)
 
-#cell_tuple = (c1, c0, c2, c4)
+print(bm.get_cell_value(cell1))
 
-#ship1 = Ship(cell_tuple)
-#print(getattr(ship1.cell_tuple[2], "number_index"))
-#print(getattr(ship1.cell_tuple[2], "letter_index"))
-#print(ship1 is None)
+print(bm.get_cell_value(cell2))
 
-# a = []
-# a.append(3)
-# a.append(6)
-# a.append(9)
-#
-# print(a)
+bm.mark_remaining_cells_as_free()
 
-# if c5 is None:
-#     print("There is no c5")
-# else:
-#     print("Hello c5")
-# print(c5.letter_index)
-# print(c5.number_index)
-#ship_length = 4
-#print("Position the", ship_length, "cell", Ship.ship_type(ship_length))
-print(chr(97))
+print(bm.get_cell_value(cell2))
+
+print(bm.get_cell_value(cell1))
