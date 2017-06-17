@@ -1,5 +1,5 @@
-from battle_map_with_cell import BattleMap
-from cell_with_new import Cell
+from battlemap import BattleMap
+from cell import Cell
 bm = BattleMap()
 
 cell1 = Cell("a", 7)

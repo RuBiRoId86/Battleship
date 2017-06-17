@@ -1,4 +1,4 @@
-from battle_map_with_cell import BattleMap
+from battlemap import BattleMap
 
 own_bm = BattleMap()
 

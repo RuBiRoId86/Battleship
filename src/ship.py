@@ -2,31 +2,40 @@ from cell import Cell
 
 class Ship:
 
-    def __init__(self,cell_tuple):
+    ship_types = {
+                    1: "submarine",
+                    2: "destroyer",
+                    3: "cruiser",
+                    4: "battleship"
+                 }
+
+    def __new__(cls,cell_tuple):
         if 1 <= len(cell_tuple) <= 4:
-            if self.are_cells_valid(cell_tuple):
+            if cls.__are_cells_valid(cell_tuple):
+                self = super(Ship, cls).__new__(cls)
                 self.cell_tuple = cell_tuple
                 print("The ship is constructed")
+                return self
 
             else:
                 print("A ship must be linear either horizontally or vertically. Ship cells must be sequential.")
         else:
             print("A ship must have at least 1 and not more than 4 cells.")
 
-
-    def are_cells_valid(self, cell_tuple):
+    @classmethod
+    def __are_cells_valid(cls, cell_tuple):
         "Checks if the ship cells are disposed linearly and sequentially."
 
-        ship_type = self.is_ship_linear(cell_tuple, "horizontal")
+        ship_type = cls.__is_ship_linear(cell_tuple, "horizontal")
 
         if ship_type is None:
-            ship_type = self.is_ship_linear(cell_tuple, "vertical")
+            ship_type = cls.__is_ship_linear(cell_tuple, "vertical")
         if ship_type is not None:
 
             ########################################
             # A check for sequentiality starts here
 
-            coord_array = self.get_array_of_indexes(cell_tuple, ship_type)
+            coord_array = cls.__get_array_of_indexes(cell_tuple, ship_type)
             coord_array.sort()
 
             for i in range(1, len(coord_array)):
@@ -39,7 +48,8 @@ class Ship:
             print("Ship construction failed. Ship cells are not linear.")
             return 0
 
-    def is_ship_linear(self, cell_tuple, type):
+    @staticmethod
+    def __is_ship_linear(cell_tuple, type):
         "Checks if the ship cells are disposed linearly."
 
         flag = 1
@@ -57,7 +67,8 @@ class Ship:
         if flag == 1:
             return type
 
-    def get_array_of_indexes(self, cell_tuple, type):
+    @staticmethod
+    def __get_array_of_indexes(cell_tuple, type):
         "Returns a list of cell coordinates, which are changing along the ship."
 
         if type == "horizontal":

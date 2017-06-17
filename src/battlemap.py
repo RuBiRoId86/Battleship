@@ -1,6 +1,6 @@
 import re
-from cell_with_new import Cell
-from ship_with_new import Ship
+from cell import Cell
+from ship import Ship
 
 class BattleMap:
     "A field with 10x10 cells. Separate instances can be used for positioning of both own and an enemy's ships."
