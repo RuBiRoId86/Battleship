@@ -1,3 +1,4 @@
+import re
 class Cell:
     def __new__(cls, letter, number):
         if "a" <= letter <= "j" and 1 <= number <= 10:
@@ -14,3 +15,16 @@ class Cell:
             return True
         else:
             return False
+
+    @classmethod
+    def cell_input(cls):
+        while True:
+            coordinate = input("Input coordinate: ")
+
+            if re.match("^[a-j]([1-9]|10)$", coordinate):
+                letter = coordinate[0]
+                number = int(coordinate[1:])
+                return cls(letter, number)
+            else:
+                print("Invalid coordinates. Try again.")
+                continue
