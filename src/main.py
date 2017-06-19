@@ -1,5 +1,6 @@
 from dashboard import Dashboard
 from battlemap import BattleMap
+from cell import Cell
 
 input("Press ENTER to start he game...")
 
@@ -24,7 +25,15 @@ print("{name}, you ships are disposed." .format(name=user2.username))
 
 print("End of input")
 
+shooting_user = user1
+target_user = user2
 
-print("{name} shoots." .format(name=user1.username))
+while True:
+    print("{name} shoots." .format(name=shooting_user.username))
+    print("Choose target.")
+    target_cell = Cell.cell_input()
+    change_turn = shooting_user.shoot(target_user, target_cell)
+    if change_turn:
+        shooting_user, target_user = target_user, shooting_user
 
-user1.shoot(user2, C)
+

@@ -12,16 +12,16 @@ class BattleMap:
     def disposition_of_all_ships(self):
         self.dispose_ship(4)
 
-        self.dispose_ship(3)
-        self.dispose_ship(3)
-
-        self.dispose_ship(2)
-        self.dispose_ship(2)
-        self.dispose_ship(2)
-
-        self.dispose_ship(1)
-        self.dispose_ship(1)
-        self.dispose_ship(1)
+        # self.dispose_ship(3)
+        # self.dispose_ship(3)
+        #
+        # self.dispose_ship(2)
+        # self.dispose_ship(2)
+        # self.dispose_ship(2)
+        #
+        # self.dispose_ship(1)
+        # self.dispose_ship(1)
+        # self.dispose_ship(1)
         self.dispose_ship(1)
 
         self.mark_remaining_cells_as_free()

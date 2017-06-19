@@ -1,6 +1,6 @@
 from cell import Cell
 
-cell = Cell.cell_input()
+cell1 = Cell("a", 8)
+cell2 = Cell("a", 9)
 
-print(cell.letter_index)
-print(cell.number_index)
+print(cell1 != cell2)

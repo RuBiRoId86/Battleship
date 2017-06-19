@@ -9,6 +9,19 @@ class Cell:
         else:
             print("Invalid cell. Coordinates are out of borders.")
 
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
+
+    @classmethod
+    def create_cell_from_indexes(cls, letter_index, number_index):
+        if Cell.cell_coordinates_are_valid(letter_index, number_index):
+            self = super(Cell, cls).__new__(cls)
+            self.letter_index = letter_index
+            self.number_index = number_index
+            return self
+        else:
+            print("Invalid cell. Coordinates are out of borders.")
+
     @staticmethod
     def cell_coordinates_are_valid(letter_index, number_index):
         if 0 <= letter_index <= 9 and 0 <= number_index <= 9:
