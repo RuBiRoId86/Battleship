@@ -22,7 +22,6 @@ print("Start ship positioning.")
 user2.myMap.disposition_of_all_ships()
 
 print("{name}, you ships are disposed." .format(name=user2.username))
-
 print("End of input")
 
 shooting_user = user1
@@ -33,7 +32,9 @@ while True:
     print("Choose target.")
     target_cell = Cell.cell_input()
     change_turn = shooting_user.shoot(target_user, target_cell)
-    if change_turn:
-        shooting_user, target_user = target_user, shooting_user
-
-
+    if shooting_user.rivalMap.ship_counter == target_user.myMap.ship_counter:
+        print("{name} wins. Perfect victory!!!" .format(name=shooting_user.username))
+        break
+    else:
+        if change_turn:
+            shooting_user, target_user = target_user, shooting_user
