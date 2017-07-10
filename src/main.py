@@ -2,7 +2,7 @@ from dashboard import Dashboard
 from battlemap import BattleMap
 from cell import Cell
 
-input("Press ENTER to start he game...")
+input("Press ENTER to start the game...")
 
 username = input("Enter User1's name: ")
 user1 = Dashboard(username)
