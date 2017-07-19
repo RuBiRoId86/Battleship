@@ -141,7 +141,7 @@
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="Player1_name">
            <property name="font">
             <font>
              <pointsize>14</pointsize>
@@ -1419,7 +1419,7 @@
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
-          <widget class="QPushButton" name="pushButton_2">
+          <widget class="QPushButton" name="Player2_name">
            <property name="font">
             <font>
              <pointsize>14</pointsize>
