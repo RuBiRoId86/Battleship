@@ -5,6 +5,7 @@
 # Created by: PyQt5 UI code generator 5.8.2
 #
 # WARNING! All changes made in this file will be lost!
+from time import sleep
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -32,6 +33,8 @@ class Ui_Form(object):
         self.verticalLayout.addItem(spacerItem)
         self.verticalLayout_2.addLayout(self.verticalLayout)
 
+        self.lineEdit.returnPressed.connect(lambda:self.open_name_dialog())
+
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
@@ -40,11 +43,13 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Test GUI"))
         self.label.setText(_translate("Form", "Text Input"))
 
-    def press_enter_to_start(self):
-        self.lineEdit.returnPressed.connect(self.hello())
 
-    def hello(self):
-        self.lineEdit.setText("Hello!!! What is your name?")
+
+    def open_name_dialog(self):
+        name, ok = QtWidgets.QInputDialog.getText(None, "Name", "Enter your name...")
+        print(name)
+        print(ok)
+
 
 
 
@@ -54,7 +59,9 @@ if __name__ == "__main__":
     Form = QtWidgets.QWidget()
     ui = Ui_Form()
     ui.setupUi(Form)
-    ui.press_enter_to_start()
+    ui.lineEdit.setText("Press any key to continue...")
+
+
     Form.show()
 
     sys.exit(app.exec_())
