@@ -23,10 +23,13 @@ class BattleShipGUI(Ui_MainWindow):
         _translate = QtCore.QCoreApplication.translate
         Window.setWindowTitle(_translate("Window", "BattleShip"))
 
-    def open_name_dialog(self, buttonName):
+    def open_name_dialog(self, button1Name, button2Name):
         name, ok = QtWidgets.QInputDialog.getText(None, "Name", "Enter your name...")
         if ok:
-            buttonName.setText(name)
+            button1Name.setText(name)
+            name, ok = QtWidgets.QInputDialog.getText(None, "Name", "Enter your name...")
+            if ok:
+                button2Name.setText(name)
 
     def start_FSM(self):
 
@@ -37,23 +40,25 @@ class BattleShipGUI(Ui_MainWindow):
         self.initial_state.entered.connect(lambda: print("initial_state"))
         self.initial_state.entered.connect(lambda: self.label.setStyleSheet("color : #555555;"))
 
-        # self.set_player_names = QtCore.QState()
-        # self.set_player_names.entered.connect(lambda: self.label.setStyleSheet("color : #5500FF;"))
-        # self.set_player_names.entered.connect(lambda: print("set_player_names"))
+        self.set_player_names = QtCore.QState()
+        self.set_player_names.entered.connect(lambda: self.label.setStyleSheet("color : #5500FF;"))
+        self.set_player_names.entered.connect(lambda: print("set_player_names"))
+        self.set_player_names.entered.connect(lambda: self.open_name_dialog(self.Player1_name, self.Player2_name))
+
 
 
         # self.set_player1_name = QtCore.QState(self.set_player_names)
-        self.set_player1_name = QtCore.QState()
-        self.set_player1_name.entered.connect(lambda: print("set_player1_name"))
-        self.set_player1_name.entered.connect(lambda: self.open_name_dialog(self.Player1_name))
+        # self.set_player1_name = QtCore.QState()
+        # self.set_player1_name.entered.connect(lambda: print("set_player1_name"))
+        # self.set_player1_name.entered.connect(lambda: self.open_name_dialog(self.Player1_name))
 
 
         # self.set_player_names.setInitialState(self.set_player1_name)
 
         # self.set_player2_name = QtCore.QFinalState(self.set_player_names)
-        self.set_player2_name = QtCore.QState()
-        self.set_player2_name.entered.connect(lambda: print("set_player2_name"))
-        self.set_player2_name.entered.connect(lambda: self.open_name_dialog(self.Player2_name))
+        # self.set_player2_name = QtCore.QState()
+        # self.set_player2_name.entered.connect(lambda: print("set_player2_name"))
+        # self.set_player2_name.entered.connect(lambda: self.open_name_dialog(self.Player2_name))
 
         self.start_playing = QtCore.QState()
         self.start_playing.entered.connect(lambda: print("start_playing"))
@@ -62,18 +67,18 @@ class BattleShipGUI(Ui_MainWindow):
 
         #Transitions
         # self.initial_state.addTransition(self.actionStart.triggered, self.set_player_names)
-        self.initial_state.addTransition(self.actionStart.triggered, self.set_player1_name)
-        # self.set_player_names.addTransition(self.set_player_names.entered, self.set_player1_name)
-        self.set_player1_name.addTransition(self.set_player1_name.exited, self.set_player2_name)
-        self.set_player2_name.addTransition(self.set_player2_name.exited, self.start_playing)
+        self.initial_state.addTransition(self.actionStart.triggered, self.set_player_names)
+        self.set_player_names.addTransition(self.set_player_names.entered, self.start_playing)
+        # self.set_player1_name.addTransition(self.set_player1_name.exited, self.set_player2_name)
+        # self.set_player2_name.addTransition(self.set_player2_name.exited, self.start_playing)
 
         #State Machine
         self.fsm = QtCore.QStateMachine()
 
         self.fsm.addState(self.initial_state)
-        # self.fsm.addState(self.set_player_names)
-        self.fsm.addState(self.set_player1_name)
-        self.fsm.addState(self.set_player2_name)
+        self.fsm.addState(self.set_player_names)
+        # self.fsm.addState(self.set_player1_name)
+        # self.fsm.addState(self.set_player2_name)
         self.fsm.addState(self.start_playing)
 
         self.fsm.setInitialState(self.initial_state)
