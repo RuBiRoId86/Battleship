@@ -1,4 +1,4 @@
-from GUI.main_gui2 import Ui_Form
+from GUI.main_gui.main_gui2 import Ui_Form
 from PyQt5 import QtCore, QtWidgets
 
 class BattleShipGUI(Ui_Form):

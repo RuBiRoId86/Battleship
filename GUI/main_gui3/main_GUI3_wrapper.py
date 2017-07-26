@@ -1,4 +1,4 @@
-from GUI.main_gui3 import Ui_MainWindow
+from GUI.main_gui3.main_gui3 import Ui_MainWindow
 from PyQt5 import QtCore, QtWidgets
 import sys
 
