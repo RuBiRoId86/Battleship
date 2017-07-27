@@ -7,12 +7,10 @@ class BattleShipGUI(Ui_MainWindow):
     def setupUi(self, Window):
         Ui_MainWindow.setupUi(self, Window)
 
-        self.Player1_name.clicked.connect(lambda: self.open_name_dialog(self.Player1_name))
-        self.Player2_name.clicked.connect(lambda: self.open_name_dialog(self.Player2_name))
+        # self.Player1_name.clicked.connect(lambda: self.open_name_dialog(self.Player1_name))
+        # self.Player2_name.clicked.connect(lambda: self.open_name_dialog(self.Player2_name))
 
         # Menu items
-        # self.actionStart.triggered.connect(lambda: self.open_name_dialog(self.Player1_name))
-
         self.actionExit.setShortcut("Alt+F4")
         self.actionExit.triggered.connect(lambda: sys.exit())
 
@@ -23,13 +21,17 @@ class BattleShipGUI(Ui_MainWindow):
         _translate = QtCore.QCoreApplication.translate
         Window.setWindowTitle(_translate("Window", "BattleShip"))
 
-    def open_name_dialog(self, button1Name, button2Name):
-        name, ok = QtWidgets.QInputDialog.getText(None, "Name", "Enter your name...")
-        if ok:
-            button1Name.setText(name)
-            name, ok = QtWidgets.QInputDialog.getText(None, "Name", "Enter your name...")
-            if ok:
-                button2Name.setText(name)
+    def player_names_dialogs(self):
+        buttons = (self.Player1_name, self.Player2_name)
+
+        for button in buttons:
+            player = button.objectName().replace("_name", "")
+            while (True):
+                name, ok = QtWidgets.QInputDialog.getText(None, player, "Enter your name...")
+                if (ok and len(name) > 0):
+                    button.setText(name)
+                    print("The name of", player, "is set to", name)
+                    break
 
     def start_FSM(self):
 
@@ -43,22 +45,7 @@ class BattleShipGUI(Ui_MainWindow):
         self.set_player_names = QtCore.QState()
         self.set_player_names.entered.connect(lambda: self.label.setStyleSheet("color : #5500FF;"))
         self.set_player_names.entered.connect(lambda: print("set_player_names"))
-        self.set_player_names.entered.connect(lambda: self.open_name_dialog(self.Player1_name, self.Player2_name))
-
-
-
-        # self.set_player1_name = QtCore.QState(self.set_player_names)
-        # self.set_player1_name = QtCore.QState()
-        # self.set_player1_name.entered.connect(lambda: print("set_player1_name"))
-        # self.set_player1_name.entered.connect(lambda: self.open_name_dialog(self.Player1_name))
-
-
-        # self.set_player_names.setInitialState(self.set_player1_name)
-
-        # self.set_player2_name = QtCore.QFinalState(self.set_player_names)
-        # self.set_player2_name = QtCore.QState()
-        # self.set_player2_name.entered.connect(lambda: print("set_player2_name"))
-        # self.set_player2_name.entered.connect(lambda: self.open_name_dialog(self.Player2_name))
+        self.set_player_names.entered.connect(lambda: self.player_names_dialogs())
 
         self.start_playing = QtCore.QState()
         self.start_playing.entered.connect(lambda: print("start_playing"))
@@ -66,19 +53,14 @@ class BattleShipGUI(Ui_MainWindow):
         self.start_playing.entered.connect(lambda: self.statusbar.showMessage("Start ship positioning."))
 
         #Transitions
-        # self.initial_state.addTransition(self.actionStart.triggered, self.set_player_names)
         self.initial_state.addTransition(self.actionStart.triggered, self.set_player_names)
         self.set_player_names.addTransition(self.set_player_names.entered, self.start_playing)
-        # self.set_player1_name.addTransition(self.set_player1_name.exited, self.set_player2_name)
-        # self.set_player2_name.addTransition(self.set_player2_name.exited, self.start_playing)
 
         #State Machine
         self.fsm = QtCore.QStateMachine()
 
         self.fsm.addState(self.initial_state)
         self.fsm.addState(self.set_player_names)
-        # self.fsm.addState(self.set_player1_name)
-        # self.fsm.addState(self.set_player2_name)
         self.fsm.addState(self.start_playing)
 
         self.fsm.setInitialState(self.initial_state)
