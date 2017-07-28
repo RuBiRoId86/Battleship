@@ -1,4 +1,5 @@
 from GUI.main_gui5.main_gui5 import Ui_MainWindow
+from GUI.main_gui5.cell import Cell
 from PyQt5 import QtCore, QtWidgets
 import sys
 
@@ -13,9 +14,7 @@ class BattleShipGUI(Ui_MainWindow):
         self.buttonGroup.setExclusive(False)
         self.buttonGroup_2.setExclusive(False)
 
-        # self.buttonGroup.buttonClicked['QAbstractButton *'].connect(lambda: print(self.gridLayout.getItemPosition(self.gridLayout.indexOf(self.))))
-        # self.c = None
-        # self.buttonGroup.buttonClicked['int'].connect(lambda: self.cell_clicked_slot(self.c))
+        # self.buttonGroup.buttonClicked.connect(lambda object: self.cell_clicked_slot(object))
 
         # Menu items
         self.actionExit.setShortcut("Alt+F4")
@@ -24,15 +23,20 @@ class BattleShipGUI(Ui_MainWindow):
 
         self.start_FSM()
 
-    # @pyqtSlot(QtWidgets.QAbstractButton)
-    # def cell_clicked_slot(self, cell):
-    #     print(cell)
-
 
     def retranslateUi(self, Window):
         Ui_MainWindow.retranslateUi(self, Window)
         _translate = QtCore.QCoreApplication.translate
         Window.setWindowTitle(_translate("Window", "BattleShip"))
+
+    def cell_clicked_slot(self, cell):
+        if isinstance(cell, QtWidgets.QCheckBox):
+            print(self.gridLayout.getItemPosition(self.gridLayout.indexOf(cell)))
+            position = self.gridLayout.getItemPosition(self.gridLayout.indexOf(cell))
+            created_cell = Cell.create_cell_from_indexes(position[0], position[1])
+            print(created_cell.letter_index, created_cell.number_index)
+        elif isinstance(cell, int):
+            print(cell)
 
     def open_name_dialog(self, buttonName):
         self.statusbar.showMessage("Set the new name of " + buttonName.text() + ".")
@@ -55,6 +59,10 @@ Email: ruben86@rambler.ru
 Phone: 095461767""")
 
 
+    def cell_gui_input(self):
+        self.buttonGroup.buttonClicked.connect(lambda object: self.cell_clicked_slot(object))
+
+
     def start_FSM(self):
 
         #States
@@ -72,7 +80,11 @@ Phone: 095461767""")
         self.start_playing = QtCore.QState()
         self.start_playing.entered.connect(lambda: print("start_playing"))
         self.start_playing.assignProperty(self.centralwidget, "enabled", True)
-        self.start_playing.entered.connect(lambda: self.statusbar.showMessage("Start ship positioning."))
+        for button in self.buttonGroup_2.buttons():
+            self.start_playing.assignProperty(button, "enabled", False)
+        self.start_playing.entered.connect(lambda: self.statusbar.showMessage("{player1}, start ship positioning." .format(player1=self.Player1_name.text())))
+        self.start_playing.entered.connect(lambda: self.cell_gui_input())
+
         # self.start_playing.entered.connect(lambda: print("Position of checkbox is", self.gridLayout.getItemPosition(self.gridLayout.indexOf(self.checkBox_3))[0]))
 
 
