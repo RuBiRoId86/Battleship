@@ -1,6 +1,7 @@
 import re
 from cell import Cell
 from ship import Ship
+# from GUI.main_gui5.main_GUI5_wrapper import BattleShipGUI
 
 class BattleMap:
     "A field with 10x10 cells. Separate instances can be used for positioning of both own and an enemy's ships."
@@ -42,8 +43,37 @@ class BattleMap:
         self.ship_counter += 1
         print("The ship is disposed on the battle map.")
 
+    # @staticmethod
+    # def ship_construction(ship_length):
+    #     print("Position the", ship_length, "cell", Ship.ship_types[ship_length])
+    #
+    #     ship = None
+    #     while ship is None:
+    #         cell_list = []
+    #         for c in range(ship_length):
+    #             cell = None
+    #             while cell is None:
+    #                 coordinate = input("Input coordinate: ")
+    #
+    #                 if re.match("^[a-j]([1-9]|10)$", coordinate):
+    #                     letter = coordinate[0]
+    #                     number = int(coordinate[1:])
+    #                 else:
+    #                     print("Invalid coordinates. Try again.")
+    #                     continue
+    #
+    #                 cell = Cell(letter, number)
+    #             cell_list.append(cell)
+    #         cell_tuple = tuple(cell_list)
+    #         ship = Ship(cell_tuple)
+    #
+    #     print("The", ship_length, "cell", Ship.ship_types[ship_length], "is constructed.")
+    #
+    #     return ship
+
+
     @staticmethod
-    def ship_construction(ship_length):
+    def ship_construction(ship_length, gui):
         print("Position the", ship_length, "cell", Ship.ship_types[ship_length])
 
         ship = None
@@ -51,18 +81,9 @@ class BattleMap:
             cell_list = []
             for c in range(ship_length):
                 cell = None
-                while cell is None:
-                    coordinate = input("Input coordinate: ")
-
-                    if re.match("^[a-j]([1-9]|10)$", coordinate):
-                        letter = coordinate[0]
-                        number = int(coordinate[1:])
-                    else:
-                        print("Invalid coordinates. Try again.")
-                        continue
-
-                    cell = Cell(letter, number)
-                cell_list.append(cell)
+                position = gui.gridLayout.getItemPosition(gui.gridLayout.indexOf(cell))
+                created_cell = Cell.create_cell_from_indexes(position[0] - 1, position[1] - 1)
+                cell_list.append(created_cell)
             cell_tuple = tuple(cell_list)
             ship = Ship(cell_tuple)
 
