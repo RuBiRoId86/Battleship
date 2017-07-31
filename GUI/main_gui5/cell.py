@@ -41,3 +41,11 @@ class Cell:
             else:
                 print("Invalid coordinates. Try again.")
                 continue
+
+    # def cell_gui_input(self, gui_object, object):
+    #     print("Yeeeeeeeeeeeeeeaaaaaaaaaaaaaaaaaaaa")
+    #     position = gui_object.gridLayout.getItemPosition(gui_object.gridLayout.indexOf(object))
+    #     print(position)
+    #     return self.create_cell_from_indexes(position[0] - 1, position[1] - 1)
+    #     # print("the cell is created")
+    #

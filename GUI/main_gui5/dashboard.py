@@ -4,9 +4,18 @@ from cell import Cell
 class Dashboard:
 
     def __init__(self, username):
-        self.myMap = BattleMap()
-        self.rivalMap = BattleMap()
+        self.myMap = BattleMap(Dashboard.gui)
+        self.rivalMap = BattleMap(Dashboard.gui)
         self.username = username
+
+    gui = None
+
+    @classmethod
+    def set_gui(cls, gui_object):
+        cls.gui = gui_object
+
+
+
 
     def shoot(self, other_user, target_cell):
         change_turn = False
