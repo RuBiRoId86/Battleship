@@ -42,10 +42,16 @@ class Cell:
                 print("Invalid coordinates. Try again.")
                 continue
 
-    # def cell_gui_input(self, gui_object, object):
-    #     print("Yeeeeeeeeeeeeeeaaaaaaaaaaaaaaaaaaaa")
-    #     position = gui_object.gridLayout.getItemPosition(gui_object.gridLayout.indexOf(object))
-    #     print(position)
-    #     return self.create_cell_from_indexes(position[0] - 1, position[1] - 1)
-    #     # print("the cell is created")
-    #
+    cell_constuctor_iterator = 0
+
+    @classmethod
+    def cell_gui_input(cls, gui):
+        gui.buttonGroup.buttonClicked.connect(lambda object: cls.cell_gui_input_slot(gui, object))
+
+    @staticmethod
+    def cell_gui_input_slot(gui, object):
+        position = gui.gridLayout.getItemPosition(gui.gridLayout.indexOf(object))
+        created_cell = Cell.create_cell_from_indexes(position[0] - 1, position[1] - 1)
+        print(created_cell.letter_index, created_cell.number_index)
+        gui.buttonGroup.buttonClicked.disconnect()
+        Cell.cell_constuctor_iterator += 1

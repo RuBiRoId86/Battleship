@@ -30,11 +30,13 @@ class mainGUI(BattleShipGUI):
         # self.user1.myMap.ship_construction(4, self)
 
         # self.buttonGroup.buttonClicked.connect(lambda object : BattleMap.ship_construction(3, object))
-        self.buttonGroup.buttonClicked.connect(lambda object : self.getObject(object))
+        # self.buttonGroup.buttonClicked.connect(lambda object : self.getObject(object))
+        BattleMap.ship_construction(self, 4)
 
     def getObject(self, object):
         self.object = object
         print(object)
+
 
 
 

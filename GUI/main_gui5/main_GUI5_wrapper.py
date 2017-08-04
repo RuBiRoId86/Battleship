@@ -64,6 +64,7 @@ Phone: 095461767""")
         for button in self.buttonGroup_2.buttons():
             self.start_playing.assignProperty(button, "enabled", False)
         self.start_playing.entered.connect(lambda: self.statusbar.showMessage("{player1}, start ship positioning." .format(player1=self.Player1_name.text())))
+        # self.start_playing.entered.connect(lambda: self.ship_positioning())
         self.start_playing.entered.connect(lambda: self.ship_positioning())
 
         #Transitions
