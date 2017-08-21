@@ -43,7 +43,7 @@ Phone: 095461767""")
 
     def start_FSM(self):
 
-        #States
+        # States
         self.initial_state = QtCore.QState()
         self.initial_state.assignProperty(self.centralwidget, "enabled", False)
         self.initial_state.entered.connect(lambda: print("initial_state"))
@@ -67,11 +67,11 @@ Phone: 095461767""")
         # self.start_playing.entered.connect(lambda: self.ship_positioning())
         self.start_playing.entered.connect(lambda: self.ship_positioning())
 
-        #Transitions
+        # Transitions
         self.initial_state.addTransition(self.actionStart.triggered, self.set_player_names)
         self.set_player_names.addTransition(self.set_player_names.entered, self.start_playing)
 
-        #State Machine
+        # State Machine
         self.fsm = QtCore.QStateMachine()
 
         self.fsm.addState(self.initial_state)

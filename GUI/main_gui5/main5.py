@@ -25,22 +25,6 @@ class mainGUI(BattleShipGUI):
                 self.user2 = Dashboard(self.Player2_name.text())
             print(self.user1.username, " - ", self.user2.username)
 
-    def ship_positioning(self):
-        # self.user1.myMap.disposition_of_all_ships()
-        # self.user1.myMap.ship_construction(4, self)
-
-        # self.buttonGroup.buttonClicked.connect(lambda object : BattleMap.ship_construction(3, object))
-        # self.buttonGroup.buttonClicked.connect(lambda object : self.getObject(object))
-        BattleMap.ship_construction(self, 4)
-
-    def getObject(self, object):
-        self.object = object
-        print(object)
-
-
-
-
-
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     Window = QtWidgets.QMainWindow()
