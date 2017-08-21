@@ -41,3 +41,8 @@ class Cell:
             else:
                 print("Invalid coordinates. Try again.")
                 continue
+
+    @staticmethod
+    def gui_cell_input(object):
+        print("gui_cell_input", object.objectName())
+        # gui.buttonGroup.disconnect()

@@ -25,6 +25,16 @@ class mainGUI(BattleShipGUI):
                 self.user2 = Dashboard(self.Player2_name.text())
             print(self.user1.username, " - ", self.user2.username)
 
+    def ship_positioning(self):
+        print("ship_positioning()")
+        self.buttonGroup.buttonClicked.connect(lambda object : self.ship_positioning_slot(object))
+
+    def ship_positioning_slot(self, object):
+        print("Hello!!!!")
+        Cell.gui_cell_input(object)
+        self.buttonGroup.disconnect()
+        print("Bye")
+
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     Window = QtWidgets.QMainWindow()

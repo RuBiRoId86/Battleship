@@ -8,6 +8,12 @@ class Dashboard:
         self.rivalMap = BattleMap()
         self.username = username
 
+    gui = None
+
+    @classmethod
+    def set_gui(cls, gui_object):
+        cls.gui = gui_object
+
     def shoot(self, other_user, target_cell):
         change_turn = False
         if self.rivalMap.get_cell_value(target_cell) is None:
@@ -38,5 +44,3 @@ class Dashboard:
             print("Invalid target cell value.")
 
         return change_turn
-
-    def

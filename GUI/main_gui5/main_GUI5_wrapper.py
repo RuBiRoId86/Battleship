@@ -1,5 +1,5 @@
 from GUI.main_gui5.main_gui5 import Ui_MainWindow
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtWidgets, QtGui
 import sys
 
 class BattleShipGUI(Ui_MainWindow):
@@ -17,6 +17,9 @@ class BattleShipGUI(Ui_MainWindow):
         self.actionExit.setShortcut("Alt+F4")
         self.actionExit.triggered.connect(lambda: sys.exit())
         self.actionAbout_us.triggered.connect(lambda: self.show_help())
+
+        # Shortcuts
+        self.end_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence("Ctrl+E"), Window)
 
     def retranslateUi(self, Window):
         Ui_MainWindow.retranslateUi(self, Window)
@@ -38,7 +41,6 @@ Phone: 095461767""")
 
     def ship_positioning(self):
         pass
-
 
 
     def start_FSM(self):
@@ -64,11 +66,18 @@ Phone: 095461767""")
         for button in self.buttonGroup_2.buttons():
             self.start_playing.assignProperty(button, "enabled", False)
         self.start_playing.entered.connect(lambda: self.statusbar.showMessage("{player1}, start ship positioning." .format(player1=self.Player1_name.text())))
-        #self.start_playing.entered.connect(lambda: self.start_positioning_FSM())
+        self.start_playing.entered.connect(lambda: self.start_positioning_FSM())
+
+        self.end = QtCore.QState()
+        self.end.assignProperty(self.centralwidget, "enabled", False)
+        self.end.entered.connect(lambda: print("End of the game!!!"))
+        self.end.entered.connect(lambda: self.label.setStyleSheet("color : #555555;"))
+        self.end.entered.connect(lambda: self.statusbar.showMessage("Game Over!!!!!"))
 
         # Transitions
         self.initial_state.addTransition(self.actionStart.triggered, self.set_player_names)
         self.set_player_names.addTransition(self.set_player_names.entered, self.start_playing)
+        self.start_playing.addTransition(self.end_shortcut.activated, self.end)
 
         # State Machine
         self.fsm = QtCore.QStateMachine()
@@ -76,6 +85,7 @@ Phone: 095461767""")
         self.fsm.addState(self.initial_state)
         self.fsm.addState(self.set_player_names)
         self.fsm.addState(self.start_playing)
+        self.fsm.addState(self.end)
 
         self.fsm.setInitialState(self.initial_state)
 
@@ -87,6 +97,7 @@ Phone: 095461767""")
         # States
         self.input_cell = QtCore.QState()
         self.input_cell.entered.connect(lambda: print("cell is inputted."))
+        self.input_cell.entered.connect(lambda: self.ship_positioning())
 
         self.check_ship = QtCore.QState()
         self.check_ship.entered.connect(lambda: print("check ship."))
