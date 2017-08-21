@@ -64,8 +64,7 @@ Phone: 095461767""")
         for button in self.buttonGroup_2.buttons():
             self.start_playing.assignProperty(button, "enabled", False)
         self.start_playing.entered.connect(lambda: self.statusbar.showMessage("{player1}, start ship positioning." .format(player1=self.Player1_name.text())))
-        # self.start_playing.entered.connect(lambda: self.ship_positioning())
-        self.start_playing.entered.connect(lambda: self.ship_positioning())
+        #self.start_playing.entered.connect(lambda: self.start_positioning_FSM())
 
         # Transitions
         self.initial_state.addTransition(self.actionStart.triggered, self.set_player_names)
@@ -81,3 +80,27 @@ Phone: 095461767""")
         self.fsm.setInitialState(self.initial_state)
 
         self.fsm.start()
+
+
+    def start_positioning_FSM(self):
+
+        # States
+        self.input_cell = QtCore.QState()
+        self.input_cell.entered.connect(lambda: print("cell is inputted."))
+
+        self.check_ship = QtCore.QState()
+        self.check_ship.entered.connect(lambda: print("check ship."))
+
+        # Transitions
+        self.input_cell.addTransition(self.buttonGroup.buttonClicked, self.check_ship)
+        self.check_ship.addTransition(self.check_ship.entered, self.input_cell)
+
+        # State Machine
+        self.positioning = QtCore.QStateMachine()
+
+        self.positioning.addState(self.input_cell)
+        self.positioning.addState(self.check_ship)
+
+        self.positioning.setInitialState(self.input_cell)
+
+        self.positioning.start()

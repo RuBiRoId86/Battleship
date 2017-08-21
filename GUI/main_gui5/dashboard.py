@@ -38,3 +38,5 @@ class Dashboard:
             print("Invalid target cell value.")
 
         return change_turn
+
+    def
