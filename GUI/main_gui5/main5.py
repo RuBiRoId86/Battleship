@@ -26,14 +26,12 @@ class mainGUI(BattleShipGUI):
             print(self.user1.username, " - ", self.user2.username)
 
     def ship_positioning(self):
-        print("ship_positioning()")
         self.buttonGroup.buttonClicked.connect(lambda object : self.ship_positioning_slot(object))
 
     def ship_positioning_slot(self, object):
-        print("Hello!!!!")
-        Cell.gui_cell_input(object)
+        Cell.gui_cell_input(self, object)
         self.buttonGroup.disconnect()
-        print("Bye")
+        self.custom_signal.cell_created.emit()
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)

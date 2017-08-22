@@ -2,6 +2,9 @@ from GUI.main_gui5.main_gui5 import Ui_MainWindow
 from PyQt5 import QtCore, QtWidgets, QtGui
 import sys
 
+class CustomSignals(QtCore.QObject):
+    cell_created = QtCore.pyqtSignal()
+
 class BattleShipGUI(Ui_MainWindow):
 
     def setupUi(self, Window):
@@ -17,6 +20,9 @@ class BattleShipGUI(Ui_MainWindow):
         self.actionExit.setShortcut("Alt+F4")
         self.actionExit.triggered.connect(lambda: sys.exit())
         self.actionAbout_us.triggered.connect(lambda: self.show_help())
+
+        # Signals
+        self.custom_signal = CustomSignals()
 
         # Shortcuts
         self.end_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence("Ctrl+E"), Window)
@@ -46,7 +52,11 @@ Phone: 095461767""")
     def start_FSM(self):
 
         # States
-        self.initial_state = QtCore.QState()
+        self.ParentStateToEnd = QtCore.QState()
+
+
+
+        self.initial_state = QtCore.QState(self.ParentStateToEnd)
         self.initial_state.assignProperty(self.centralwidget, "enabled", False)
         self.initial_state.entered.connect(lambda: print("initial_state"))
         self.initial_state.entered.connect(lambda: self.label.setStyleSheet("color : #555555;"))
@@ -55,12 +65,14 @@ Phone: 095461767""")
         self.initial_state.entered.connect(lambda: self.user_dashboard_initialization())
         self.initial_state.entered.connect(lambda: print(self.user1.username, " - ", self.user2.username ))
 
-        self.set_player_names = QtCore.QState()
+        self.ParentStateToEnd.setInitialState(self.initial_state)
+
+        self.set_player_names = QtCore.QState(self.ParentStateToEnd)
         self.set_player_names.entered.connect(lambda: print("set_player_names"))
         self.set_player_names.entered.connect(lambda: self.label.setStyleSheet("color : #5500FF;"))
         self.set_player_names.entered.connect(lambda: self.player_names_dialogs())
 
-        self.start_playing = QtCore.QState()
+        self.start_playing = QtCore.QState(self.ParentStateToEnd)
         self.start_playing.entered.connect(lambda: print("start_playing"))
         self.start_playing.assignProperty(self.centralwidget, "enabled", True)
         for button in self.buttonGroup_2.buttons():
@@ -77,17 +89,18 @@ Phone: 095461767""")
         # Transitions
         self.initial_state.addTransition(self.actionStart.triggered, self.set_player_names)
         self.set_player_names.addTransition(self.set_player_names.entered, self.start_playing)
-        self.start_playing.addTransition(self.end_shortcut.activated, self.end)
+        self.ParentStateToEnd.addTransition(self.end_shortcut.activated, self.end)
 
         # State Machine
         self.fsm = QtCore.QStateMachine()
 
+        self.fsm.addState(self.ParentStateToEnd)
         self.fsm.addState(self.initial_state)
         self.fsm.addState(self.set_player_names)
         self.fsm.addState(self.start_playing)
         self.fsm.addState(self.end)
 
-        self.fsm.setInitialState(self.initial_state)
+        self.fsm.setInitialState(self.ParentStateToEnd)
 
         self.fsm.start()
 
@@ -103,7 +116,7 @@ Phone: 095461767""")
         self.check_ship.entered.connect(lambda: print("check ship."))
 
         # Transitions
-        self.input_cell.addTransition(self.buttonGroup.buttonClicked, self.check_ship)
+        self.input_cell.addTransition(self.custom_signal.cell_created, self.check_ship)
         self.check_ship.addTransition(self.check_ship.entered, self.input_cell)
 
         # State Machine

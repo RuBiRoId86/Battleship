@@ -43,6 +43,8 @@ class Cell:
                 continue
 
     @staticmethod
-    def gui_cell_input(object):
-        print("gui_cell_input", object.objectName())
-        # gui.buttonGroup.disconnect()
+    def gui_cell_input(gui, object):
+        letter_index = gui.gridLayout.getItemPosition(gui.gridLayout.indexOf(object))[0] - 1
+        number_index = gui.gridLayout.getItemPosition(gui.gridLayout.indexOf(object))[1] - 1
+        created_cell = Cell.create_cell_from_indexes(letter_index, number_index)
+        print(created_cell.letter_index, created_cell.number_index)
