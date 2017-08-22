@@ -25,13 +25,31 @@ class mainGUI(BattleShipGUI):
                 self.user2 = Dashboard(self.Player2_name.text())
             print(self.user1.username, " - ", self.user2.username)
 
-    def ship_positioning(self):
-        self.buttonGroup.buttonClicked.connect(lambda object : self.ship_positioning_slot(object))
+    def cell_selection(self):
+        self.buttonGroup.buttonClicked.connect(lambda object : self.cell_selection_slot(object))
 
-    def ship_positioning_slot(self, object):
-        Cell.gui_cell_input(self, object)
+    def cell_selection_slot(self, object):
+        created_cell = Cell.gui_cell_input(self, object)
+        self.cell_list.append(created_cell)
+        print(self.cell_list[-1].letter_index, self.cell_list[-1].number_index)
         self.buttonGroup.disconnect()
         self.custom_signal.cell_created.emit()
+
+
+    def varify_ship_length(self, length):
+        print("Varifying ship length.")
+        if (len(self.cell_list) < length):
+            print("There are", len(self.cell_list), "cells in the ship")
+            pass
+        else:
+            print("The ship is constructed.")
+            self.cell_list = []
+            print("There are", len(self.cell_list), "cells in the ship")
+
+
+    def ship_construction(self, length):
+        self.ship_construction_FSM(length)
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)

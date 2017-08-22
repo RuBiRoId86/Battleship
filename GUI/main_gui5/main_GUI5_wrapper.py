@@ -45,9 +45,16 @@ Contacts:
 Email: ruben86@rambler.ru
 Phone: 095461767""")
 
-    def ship_positioning(self):
+    def cell_selection(self):
         pass
 
+    def varify_ship_length(self, length):
+        pass
+
+    cell_counter = 0
+
+    def ship_construction(self, length):
+        pass
 
     def start_FSM(self):
 
@@ -78,7 +85,8 @@ Phone: 095461767""")
         for button in self.buttonGroup_2.buttons():
             self.start_playing.assignProperty(button, "enabled", False)
         self.start_playing.entered.connect(lambda: self.statusbar.showMessage("{player1}, start ship positioning." .format(player1=self.Player1_name.text())))
-        self.start_playing.entered.connect(lambda: self.start_positioning_FSM())
+        # self.start_playing.entered.connect(lambda: self.start_positioning_FSM())
+        self.start_playing.entered.connect(lambda: self.ship_construction(4))
 
         self.end = QtCore.QState()
         self.end.assignProperty(self.centralwidget, "enabled", False)
@@ -105,25 +113,28 @@ Phone: 095461767""")
         self.fsm.start()
 
 
-    def start_positioning_FSM(self):
+    def ship_construction_FSM(self, length):
+
+        self.cell_list = []
 
         # States
         self.input_cell = QtCore.QState()
         self.input_cell.entered.connect(lambda: print("cell is inputted."))
-        self.input_cell.entered.connect(lambda: self.ship_positioning())
+        self.input_cell.entered.connect(lambda: self.cell_selection())
 
-        self.check_ship = QtCore.QState()
-        self.check_ship.entered.connect(lambda: print("check ship."))
+        self.ship_length_varification = QtCore.QState()
+        self.ship_length_varification.entered.connect(lambda: print("ship_length_varification."))
+        self.ship_length_varification.entered.connect(lambda: self.varify_ship_length(length))
 
         # Transitions
-        self.input_cell.addTransition(self.custom_signal.cell_created, self.check_ship)
-        self.check_ship.addTransition(self.check_ship.entered, self.input_cell)
+        self.input_cell.addTransition(self.custom_signal.cell_created, self.ship_length_varification)
+        self.ship_length_varification.addTransition(self.ship_length_varification.entered, self.input_cell)
 
         # State Machine
         self.positioning = QtCore.QStateMachine()
 
         self.positioning.addState(self.input_cell)
-        self.positioning.addState(self.check_ship)
+        self.positioning.addState(self.ship_length_varification)
 
         self.positioning.setInitialState(self.input_cell)
 
