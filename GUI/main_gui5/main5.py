@@ -5,7 +5,6 @@ from ship import Ship
 from cell import Cell
 from GUI.main_gui5.main_GUI5_wrapper import BattleShipGUI
 from PyQt5 import QtCore, QtWidgets
-import traceback
 
 class mainGUI(BattleShipGUI):
 
@@ -49,10 +48,7 @@ class mainGUI(BattleShipGUI):
             self.custom_signal.ship_constructed.emit()
 
     def ship_construction(self, length):
-        try:
-            self.ship_construction_FSM(length)
-        except:
-            traceback.print_exc()
+        self.ship_construction_FSM(length)
 
 
     def ship_construction_FSM(self, length):

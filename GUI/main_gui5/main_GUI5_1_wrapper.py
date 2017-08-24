@@ -11,6 +11,8 @@ class BattleShipGUI(Ui_MainWindow):
     def setupUi(self, Window):
         Ui_MainWindow.setupUi(self, Window)
 
+        self.aaa = 5
+
         self.Player1_name.clicked.connect(lambda: self.open_name_dialog(self.Player1_name))
         self.Player2_name.clicked.connect(lambda: self.open_name_dialog(self.Player2_name))
 
@@ -46,11 +48,10 @@ Contacts:
 Email: ruben86@rambler.ru
 Phone: 095461767""")
 
-    def ship_construction(self, length):
-        pass
 
-    def input_cell_gui(self, battlemap):
-        pass
+
+    # def input_cell_gui(self, battlemap):
+    #     pass
 
     def start_FSM(self):
 
@@ -79,9 +80,8 @@ Phone: 095461767""")
         for button in self.buttonGroup_2.buttons():
             self.start_playing.assignProperty(button, "enabled", False)
         self.start_playing.entered.connect(lambda: self.statusbar.showMessage("{player1}, start ship positioning." .format(player1=self.Player1_name.text())))
-        # self.start_playing.entered.connect(lambda: self.start_positioning_FSM())
+        # self.start_playing.entered.connect(lambda: self.input_cell_gui())
         self.start_playing.entered.connect(lambda: self.ship_construction(4))
-        # self.start_playing.entered.connect(lambda: self.input_cell_gui(self.user1.myMap))
 
         self.end = QtCore.QState()
         self.end.assignProperty(self.centralwidget, "enabled", False)
@@ -92,7 +92,7 @@ Phone: 095461767""")
         # Transitions
         self.initial_state.addTransition(self.actionStart.triggered, self.set_player_names)
         self.set_player_names.addTransition(self.set_player_names.entered, self.start_playing)
-        self.start_playing.addTransition(self.custom_signal.ship_constructed, self.end)
+        self.start_playing.addTransition(self.custom_signal.cell_created, self.end)
         self.ParentStateToEnd.addTransition(self.end_shortcut.activated, self.end)
 
         # State Machine

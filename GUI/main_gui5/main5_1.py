@@ -3,9 +3,44 @@ from dashboard import Dashboard
 from battlemap import BattleMap
 from ship import Ship
 from cell import Cell
-from GUI.main_gui5.main_GUI5_wrapper import BattleShipGUI
+from GUI.main_gui5.main_GUI5_1_wrapper import BattleShipGUI
 from PyQt5 import QtCore, QtWidgets
-import traceback
+
+class BattleMapGUI(BattleMap):
+
+    @staticmethod
+    def ship_construction(ship_length, gui):
+        print("Position the", ship_length, "cell", Ship.ship_types[ship_length])
+
+        ship = None
+        while ship is None:
+            cell_list = []
+            for c in range(ship_length):
+                cell = None
+                while cell is None:
+                    # coordinate = input("Input coordinate: ")
+                    #
+                    # if re.match("^[a-j]([1-9]|10)$", coordinate):
+                    #     letter = coordinate[0]
+                    #     number = int(coordinate[1:])
+                    # else:
+                    #     print("Invalid coordinates. Try again.")
+                    #     continue
+                    # cell = Cell(letter, number)
+                    print("AAAAAAAAAA")
+
+                    gui.input_cell_gui()
+                    print("BBBBBBBBBBBBB")
+                    cell = gui.created_cell
+                    # print(cell.letter_index, cell.number_index)
+
+                # cell_list.append(cell)
+            # cell_tuple = tuple(cell_list)
+            # ship = Ship(cell_tuple)
+
+        print("The", ship_length, "cell", Ship.ship_types[ship_length], "is constructed.")
+
+        return ship
 
 class mainGUI(BattleShipGUI):
 
@@ -30,62 +65,42 @@ class mainGUI(BattleShipGUI):
         self.buttonGroup.buttonClicked.connect(lambda object : self.cell_selection_slot(object))
 
     def cell_selection_slot(self, object):
-        created_cell = Cell.gui_cell_input(self, object)
-        self.cell_list.append(created_cell)
-        print(self.cell_list[-1].letter_index, self.cell_list[-1].number_index)
+        self.created_cell = Cell.gui_cell_input(self, object)
+        print(self.created_cell.letter_index, self.created_cell.number_index)
         self.buttonGroup.disconnect()
         self.custom_signal.cell_created.emit()
 
-
-    def varify_ship_length(self, length):
-        print("Varifying ship length.")
-        if (len(self.cell_list) < length):
-            print("There are", len(self.cell_list), "cells in the ship")
-            pass
-        else:
-            print("The ship is constructed. There are", len(self.cell_list), "cells in the ship.")
-            self.cell_list = []
-            print("cell_list is flushed. There are", len(self.cell_list), "cells in the ship")
-            self.custom_signal.ship_constructed.emit()
-
     def ship_construction(self, length):
-        try:
-            self.ship_construction_FSM(length)
-        except:
-            traceback.print_exc()
+        BattleMapGUI.ship_construction(length, self)
+
+    def input_cell_gui(self):
+        print("Hello")
+        self.input_cell_FSM()
 
 
-    def ship_construction_FSM(self, length):
-
-        self.cell_list = []
+    def input_cell_FSM(self):
 
         # States
         self.input_cell = QtCore.QState()
-        self.input_cell.entered.connect(lambda: print("cell is inputted."))
+        self.input_cell.entered.connect(lambda: print("CCCCCCCCCCCCCC"))
         self.input_cell.entered.connect(lambda: self.cell_selection())
-
-        self.ship_length_varification = QtCore.QState()
-        self.ship_length_varification.entered.connect(lambda: print("ship_length_varification."))
-        self.ship_length_varification.entered.connect(lambda: self.varify_ship_length(length))
+        self.input_cell.entered.connect(lambda: print("cell is inputted."))
 
         self.finalState = QtCore.QFinalState()
         self.finalState.entered.connect(lambda: print("Finish"))
 
         # Transitions
-        self.input_cell.addTransition(self.custom_signal.cell_created, self.ship_length_varification)
-        self.ship_length_varification.addTransition(self.ship_length_varification.entered, self.input_cell)
-        self.ship_length_varification.addTransition(self.custom_signal.ship_constructed, self.finalState)
+        self.input_cell.addTransition(self.custom_signal.cell_created, self.finalState)
 
         # State Machine
-        self.positioning = QtCore.QStateMachine()
+        self.cell_inputting = QtCore.QStateMachine()
 
-        self.positioning.addState(self.input_cell)
-        self.positioning.addState(self.ship_length_varification)
-        self.positioning.addState(self.finalState)
+        self.cell_inputting.addState(self.input_cell)
+        self.cell_inputting.addState(self.finalState)
 
-        self.positioning.setInitialState(self.input_cell)
+        self.cell_inputting.setInitialState(self.input_cell)
 
-        self.positioning.start()
+        self.cell_inputting.start()
 
 
 
