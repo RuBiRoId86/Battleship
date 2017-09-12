@@ -46,9 +46,7 @@ Contacts:
 Email: ruben86@rambler.ru
 Phone: 095461767""")
 
-    # def ship_construction(self, length):
-    #     pass
-
+############### Methods for ship construction FSM ####################
     def varify_ship_length(self, length):
         print("Varifying ship length.")
         if (len(self.cell_list) < length):
@@ -61,13 +59,14 @@ Phone: 095461767""")
             print("cell_list is flushed. There are", len(self.cell_list), "cells in the ship")
             self.custom_signal.ship_constructed.emit()
 
-    def varify_ship(self):
-        print("Varify")
-        for c in self.cell_tuple:
-            print("Letter Index is", c.letter_index, " - ", "Number index is" , c.number_index)
+    # def varify_ship(self):
+    #     print("Varify")
+    #     for c in self.cell_tuple:
+    #         print("Letter Index is", c.letter_index, " - ", "Number index is" , c.number_index)
 
     def ship_construction(self, length):
-        self.ship_construction_FSM(length)
+        pass
+        # self.ship_construction_FSM(length)
 
 
 ############# Main State Machine #################################
@@ -99,7 +98,7 @@ Phone: 095461767""")
             self.start_playing.assignProperty(button, "enabled", False)
         self.start_playing.entered.connect(lambda: self.statusbar.showMessage("{player1}, start ship positioning." .format(player1=self.Player1_name.text())))
         # self.start_playing.entered.connect(lambda: self.start_positioning_FSM())
-        self.start_playing.entered.connect(lambda: self.ship_construction(4))
+        self.start_playing.entered.connect(lambda: self.ship_construction_FSM(4))
 
         self.end = QtCore.QState()
         self.end.assignProperty(self.centralwidget, "enabled", False)
