@@ -51,6 +51,15 @@ class mainGUI(BattleShipGUI):
         BattleMap.ship_counter += 1
         print("The ship is disposed on the battle map.")
         print("Test::", self.user1.myMap.map)
+        self.custom_signal.valid_ship.emit()
+        print("ship_position signal emitted")
+
+    def mark_remaining_cells_as_free(self, battlemap):
+        print("Start marking all unmarked cells!!!!!!!!!!!")
+        BattleMap.mark_remaining_cells_as_free(battlemap)
+        print("End marking all unmarked cells!!!!!!!!!!!")
+        self.custom_signal.all_ships_constructed.emit()
+        print("all_ships_constructed signal emitted!!!")
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
